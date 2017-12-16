@@ -7,6 +7,11 @@
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <style>
     /*  */
+
+    #grid span {
+      padding-left:2em;
+      /* font: mono; */
+    }
   </style>
 </head>
 <body>
@@ -39,7 +44,7 @@
       for (var y = 0; y < n; y++) {
         for (var x = 0; x < n; x++) {
         //  console.log(a[y][x])
-          m += (Math.round(a[y][x]))*10 +" "
+          m += "<span>"+ (Math.round((a[y][x])*10))/1 + "</span>"
         }
         m += "<br>";
       }
