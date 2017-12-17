@@ -15,5 +15,5 @@ Visit this page to give it try: [https://boydx.github.io/color-time](https://boy
 
 ## JS libraries used
 
-chroma.js - [https://github.com/gka/chroma.js/](https://github.com/gka/chroma.js/)
-jQuery - DOM utility
+* chroma.js - [https://github.com/gka/chroma.js/](https://github.com/gka/chroma.js/)
+* jQuery - DOM utility
