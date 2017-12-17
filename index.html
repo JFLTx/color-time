@@ -1,74 +1,195 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset=utf-8 />
   <title>color grid</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
   <style>
     /*  */
 
     body {
       margin: 0;
       padding: 0;
+
+
     }
 
-    #grid {
-       height:;
-       width:100vw;
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-gap: 0;
+      margin: 0;
+      background-color: rgba(205, 205, 205, 0.8);
+      padding: 0;
+      height: 100vh;
+      z-index: 100;
     }
 
-    #grid div {
-      //margin:0 0 2em 2em;
-      padding:0 0 2em 2em;
-      float:left;
-      width:50px;
-      height:50px;
-      /* font: mono; */
+    .grid-container>div {
+      /* background-color: rgba(255, 255, 255, 0.6); */
+      text-align: center;
+      padding: 20px;
+      font-size: 20px;
+      font-family: 'Rubik', sans-serif;
+      color: rgba(255, 255, 255, 0.7);
+      z-index: 100;
+    }
+
+    #color-animate {
+      position: fixed;
+      padding: 0;
+      margin: 0;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+      background: rgba(44, 44, 88, 1);
+      z-index: -1;
+    }
+
+    .above {
+      z-index: 9000;
     }
   </style>
 </head>
+
 <body>
   <!-- -->
-  <div id="grid"></div>
+
+  <div class="grid-container" id="color-grid">
+
+
+    <div class="first-run" class="above">Color ramper</div>
+    <div class="first-run">
+      <select id="firstColor" class="above">
+    </select>
+      <select id="lastColor" s>
+    </select>
+      </select>
+      <select id="nColors">
+      <option value="3">3n</option>
+      <option value="4">4n</option>
+      <option value="5">5n</option>
+      <option value="6">6n</option>
+      <option value="7">7n</option>
+      <option value="8">8n</option>
+      <option value="9">9n</option>
+  </select>
+      <button id="buttonRun">ramp</button></div>
+    <div class="first-run"></div>
+
+  </div>
+  <div id="color-animate"></div>
+  <!-- <div id="grid"></div> -->
+  <script src="color-names.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.4/chroma.min.js"></script>
   <script>
-   /*  */
-    var n = 6, // number of cells on square side
-      colorStart = 'cornsilk',
-      colorEnd = 'teal',
-        a = [];
+    /*  */
 
-    // build empty array
-    for (var i = 0; i < n; i++) {
-      a[i] = []
-    }
+    var colorSpace = {
+      "properties": {
+        "cancel": "no"
+      },
 
-    var i = 0;
+      colorV: function(a,n) {
 
-    // create matrix to filter colors
-    for (var y = 0; y < n; y++) {
-      for (var x = 0; x < n; x++) {
-        i++
-      //  a[y][x]= Math.floor(Math.random()*256)
-      a[y][x]= (i)/n**2
+        var colorStart = $("#firstColor").val(),
+          colorEnd = $("#lastColor").val(),
+          f = chroma.scale([colorStart, colorEnd]).mode('lab');
+        $("#color-grid").empty();
+        for (var y = 0; y < n; y++) {
+          for (var x = 0; x < n; x++) {
+            var color = f(a[y][x])
+            $("<div></div>").text(color).css("background-color", color).appendTo("#color-grid");
+          }
+        }
+      },
+
+      createColor: function() {
+        var n = colorNames.length,
+          theList
+        for (var i = 0; i < n; i++) {
+          theList += "<option value='" + colorNames[i] + "' style='background-color:#000000;'>" + colorNames[i] + "</option>"
+        }
+        return theList
+      },
+
+      buildGrid: function(n) {
+        var gridNumber = "",
+          i = 0
+        while (i < n) {
+          gridNumber += "auto ";
+          i++
+        }
+        return gridNumber
+      },
+
+      colorBackground: function (cancel) {
+        console.log(cancel)
+        var i = 0,
+          j = 0,
+          color = "";
+        while (i <= 5 && cancel === "no") {
+          $("#color-animate").fadeToggle(10000, function() {
+            console.log(i,j)
+            if (j % 2 == 0) {
+              color = colorNames[((Math.floor(Math.random() * colorNames.length)) + 1)]
+              $("#color-animate").css("background-color", color)
+            }
+            j++
+          });
+          i++
+        }
       }
-    }
+    };
+
+
 
     // print array to page
-    document.getElementById('grid').innerHTML = colorV(a)
 
-    function colorV(a) {
-      var m = "", f = chroma.scale([colorStart, colorEnd]).mode('lab');
-      for (var y = 0; y < n; y++) {
-        for (var x = 0; x < n; x++) {
-        //  console.log(a[y][x])
-            var color = f(a[y][x])
-            m += "<div style= 'background-color:" + color  +"' title='"+color +"' >" + "</div>"
+    $(document).ready(function() {
+
+      $("#firstColor").append(colorSpace.createColor());
+      $("#lastColor").append(colorSpace.createColor())
+
+      $("#buttonRun").click(function() {
+
+        var n = Number($("#nColors").val()), // number of cells on square side
+          a = [];
+        colorSpace.properties.cancel = "yes";
+
+        // build grid-container
+        $("#color-grid").css("grid-template-columns", colorSpace.buildGrid(n))
+
+        // build empty array
+        for (var i = 0; i < n; i++) {
+          a[i] = []
         }
-        m += "<br style='clear:both;'>";
-      }
-      return m
-    }
+
+        var i = 0;
+
+        // create matrix to filter colors
+        for (var y = 0; y < n; y++) {
+          for (var x = 0; x < n; x++) {
+            i++
+            //  a[y][x]= Math.floor(Math.random()*256)
+            a[y][x] = (i) / n ** 2
+          }
+        }
+        colorSpace.colorV(a, n);
+        console.log(colorSpace.properties.cancel)
+        return colorSpace.properties.cancel
+      });
+    });
+
+    colorSpace.colorBackground(colorSpace.properties["cancel"]);
+
   </script>
 
 </body>
