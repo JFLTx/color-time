@@ -13,8 +13,8 @@
     body {
       margin: 0;
       padding: 0;
-
-
+      font-family: 'Rubik', sans-serif;
+      color: rgba(255, 255, 255, 0.7);
     }
 
     .grid-container {
@@ -29,12 +29,9 @@
     }
 
     .grid-container>div {
-      /* background-color: rgba(255, 255, 255, 0.6); */
       text-align: center;
       padding: 20px;
       font-size: 20px;
-      font-family: 'Rubik', sans-serif;
-      color: rgba(255, 255, 255, 0.7);
       z-index: 100;
     }
 
@@ -42,18 +39,38 @@
       position: fixed;
       padding: 0;
       margin: 0;
-
       top: 0;
       left: 0;
-
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       background: rgba(44, 44, 88, 1);
       z-index: -1;
     }
 
-    .above {
+    #float-right {
+      position: fixed;
+      padding: 0;
+      margin: 0;
+      top: 20px;
+      right: 10px;
+      /* width: 20px;
+      height: 20px; */
+        z-index: 9001;
+    }
+
+    #above {
+      text-align: center;
+      padding: 15px 0 0 0;
+      font-size: 20px;
+      font-family: 'Rubik', sans-serif;
       z-index: 9000;
+      position: fixed;
+      margin: 0;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 40px;
+      background: rgba(205, 205, 205, 0.5);
     }
   </style>
 </head>
@@ -61,29 +78,23 @@
 <body>
   <!-- -->
 
-  <div class="grid-container" id="color-grid">
+  <div id="above"> Color ramper
 
+    <select id="firstColor"></select>
+    <select id="lastColor"></select>
+    <select id="nColors">
+    <option value="3">3n</option>
+    <option value="4">4n</option>
+    <option value="5">5n</option>
+    <option value="6">6n</option>
+    <option value="7">7n</option>
+    <option value="8">8n</option>
+    <option value="9">9n</option>
+</select>
+    <button id="buttonRun">ramp</button></div>
 
-    <div class="first-run" class="above">Color ramper</div>
-    <div class="first-run">
-      <select id="firstColor" class="above">
-    </select>
-      <select id="lastColor" s>
-    </select>
-      </select>
-      <select id="nColors">
-      <option value="3">3n</option>
-      <option value="4">4n</option>
-      <option value="5">5n</option>
-      <option value="6">6n</option>
-      <option value="7">7n</option>
-      <option value="8">8n</option>
-      <option value="9">9n</option>
-  </select>
-      <button id="buttonRun">ramp</button></div>
-    <div class="first-run"></div>
-
-  </div>
+<div id="float-right"><button id="float-rightButton">hide</button></div>
+  <div class="grid-container" id="color-grid"></div>
   <div id="color-animate"></div>
   <!-- <div id="grid"></div> -->
   <script src="color-names.js"></script>
@@ -97,8 +108,7 @@
         "cancel": "no"
       },
 
-      colorV: function(a,n) {
-
+      colorV: function(a, n) {
         var colorStart = $("#firstColor").val(),
           colorEnd = $("#lastColor").val(),
           f = chroma.scale([colorStart, colorEnd]).mode('lab');
@@ -130,14 +140,14 @@
         return gridNumber
       },
 
-      colorBackground: function (cancel) {
+      colorBackground: function(cancel) {
         console.log(cancel)
         var i = 0,
           j = 0,
           color = "";
         while (i <= 5 && cancel === "no") {
           $("#color-animate").fadeToggle(10000, function() {
-            console.log(i,j)
+            console.log(i, j)
             if (j % 2 == 0) {
               color = colorNames[((Math.floor(Math.random() * colorNames.length)) + 1)]
               $("#color-animate").css("background-color", color)
@@ -183,13 +193,20 @@
           }
         }
         colorSpace.colorV(a, n);
-        console.log(colorSpace.properties.cancel)
+        $("#above").fadeOut(1000)
+
+
         return colorSpace.properties.cancel
       });
     });
 
-    colorSpace.colorBackground(colorSpace.properties["cancel"]);
+    $("#float-rightButton").click(function() {
+        $("#above").toggle(1000)
 
+      });
+
+
+    colorSpace.colorBackground(colorSpace.properties["cancel"]);
   </script>
 
 </body>
