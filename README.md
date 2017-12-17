@@ -10,7 +10,7 @@ Visit this page to give it try: [https://boydx.github.io/color-time](https://boy
 
 ## To do
 
-* Create new matrices for mixing colors. Current matrix is a linear conversion.
+* Create new matrices for mixing colors. Current matrix is a linear set.
 * Add export of color values by selecting div elements
 
 ## JS libraries used
