@@ -1,6 +1,6 @@
 # Color Time
 
-A quick way to create color gradients between two colors in the [Lab color space](https://en.wikipedia.org/wiki/Lab_color_space). Select the two colors from a dropdown of [HTML color names](https://www.w3schools.com/colors/colors_names.asp) and the number of cells on one side of a grid. The gradient uses [chroma.js color.scale method](https://gka.github.io/chroma.js/#color-scales) to convert a matrix of values to colors.
+A quick way to create full-screen color gradients between two colors in the [Lab color space](https://en.wikipedia.org/wiki/Lab_color_space). Select the two colors from a dropdown of [HTML color names](https://www.w3schools.com/colors/colors_names.asp) and the number of cells on one side of a grid. The gradient uses [chroma.js](https://gka.github.io/chroma.js/#color-scales) to convert a matrix of values to colors. 
 
 ![Example of gradient](images/example.png)
 
