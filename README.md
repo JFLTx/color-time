@@ -12,7 +12,7 @@ Visit this page to give it try: [https://boydx.github.io/color-time](https://boy
 
 * Create new matrices for mixing colors. Current matrix is a linear set from 0 to 1 (sorta).
 * Add export of color values by selecting div elements.
-* Make full-screen color swatches look awesome,
+* Make full-screen color swatches look awesome.
 
 ## JS libraries used
 
