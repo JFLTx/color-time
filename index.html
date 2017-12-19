@@ -102,7 +102,7 @@
     <button id="buttonRun">ramp</button></div>
 
   <div id="float-right">
-      <button id="float-rightButton">hide</button>
+      <button id="float-rightButton">o</button>
   </div>
   <div class="grid-container" id="color-grid"></div>
   <div id="color-animate"></div>
@@ -172,24 +172,12 @@
           });
           i++
         }
-      }
-    };
+      },
+      
+      // Create matrix to filter colors
+      makeMatrix: function(n) {
 
-    // print to page when ready!
-    $(document).ready(function() {
-
-      $("#firstColor").append(colorSpace.createColor());
-      $("#lastColor").append(colorSpace.createColor())
-
-      // jQuery button to create grid of lab colors
-      $("#buttonRun").click(function() {
-
-        var n = Number($("#nColors").val()), // number of cells on square side
-          a = []; // empty array to hold color transform values
-        colorSpace.properties.cancel = "yes"; // turn off background animation
-
-        // build grid-container
-        $("#color-grid").css("grid-template-columns", colorSpace.buildGrid(n))
+        var a = []; // empty array to hold color transform values
 
         // assemble empty array
         for (var i = 0; i < n; i++) {
@@ -205,6 +193,27 @@
             i++
           }
         }
+        return a;
+      }
+
+    };
+
+    // print to page when ready!
+    $(document).ready(function() {
+
+      $("#firstColor").append(colorSpace.createColor());
+      $("#lastColor").append(colorSpace.createColor())
+
+      // jQuery button to create grid of lab colors
+      $("#buttonRun").click(function() {
+
+        var n = Number($("#nColors").val()) // number of cells on square side
+        colorSpace.properties.cancel = "yes"; // turn off background animation
+
+        // build grid-container
+        $("#color-grid").css("grid-template-columns", colorSpace.buildGrid(n))
+
+        var a = colorSpace.makeMatrix(n);
 
         // run fucntion to create color ramp
         colorSpace.colorV(a, n);
