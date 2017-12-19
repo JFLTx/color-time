@@ -201,7 +201,7 @@
         for (var y = 0; y < n; y++) {
           for (var x = 0; x < n; x++) {
             //a[y][x]=Math.random()
-            a[y][x] = (i) / n ** 2
+            a[y][x] = (i + i/(n**2 - 1)) / n ** 2 // fix cell values for 0 - n steps
             i++
           }
         }
