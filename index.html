@@ -195,16 +195,19 @@
         for (var i = 0; i < n; i++) {
           a[i] = []
         }
-        var i = 0;
 
+        var i = 1;
         // create matrix to filter colors
         for (var y = 0; y < n; y++) {
           for (var x = 0; x < n; x++) {
             //a[y][x]=Math.random()
-            a[y][x] = (i) / n ** 2
+            console.log(i)
+            a[y][x] = (i) / n**2;
             i++
           }
         }
+
+        console.log(a)
 
         // run fucntion to create color ramp
         colorSpace.colorV(a, n);
