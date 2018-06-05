@@ -102,7 +102,7 @@
     <button id="buttonRun">ramp</button></div>
 
   <div id="float-right">
-      <button id="float-rightButton">hide</button>
+      <button id="float-rightButton">o</button>
   </div>
   <div class="grid-container" id="color-grid"></div>
   <div id="color-animate"></div>
@@ -172,7 +172,30 @@
           });
           i++
         }
+      },
+      
+      // Create matrix to filter colors
+      makeMatrix: function(n) {
+
+        var a = []; // empty array to hold color transform values
+
+        // assemble empty array
+        for (var i = 0; i < n; i++) {
+          a[i] = []
+        }
+        var i = 0;
+
+        // create matrix to filter colors
+        for (var y = 0; y < n; y++) {
+          for (var x = 0; x < n; x++) {
+            //a[y][x]=Math.random()
+            a[y][x] = (i + i/(n**2 - 1)) / n ** 2 // fix cell values for 0 - n steps
+            i++
+          }
+        }
+        return a;
       }
+
     };
 
     // print to page when ready!
@@ -184,28 +207,13 @@
       // jQuery button to create grid of lab colors
       $("#buttonRun").click(function() {
 
-        var n = Number($("#nColors").val()), // number of cells on square side
-          a = []; // empty array to hold color transform values
+        var n = Number($("#nColors").val()) // number of cells on square side
         colorSpace.properties.cancel = "yes"; // turn off background animation
 
         // build grid-container
         $("#color-grid").css("grid-template-columns", colorSpace.buildGrid(n))
 
-        // assemble empty array
-        for (var i = 0; i < n; i++) {
-          a[i] = []
-        }
-
-        var i = 1;
-        // create matrix to filter colors
-        for (var y = 0; y < n; y++) {
-          for (var x = 0; x < n; x++) {
-            //a[y][x]=Math.random()
-            console.log(i)
-            a[y][x] = (i) / n**2;
-            i++
-          }
-        }
+        var a = colorSpace.makeMatrix(n);
 
         console.log(a)
 
