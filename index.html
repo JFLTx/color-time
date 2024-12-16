@@ -3,7 +3,7 @@
 
 <head>
   <meta charset=utf-8 />
-  <title>color grid</title>
+  <title>Generate Color Grid</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
@@ -87,22 +87,23 @@
   <!-- -->
 
   <div id="above">
-    <h1>Color ramper</h1>
+    <h1>Color Ramper</h1>
     <select id="firstColor"></select>
     <select id="lastColor"></select>
     <select id="nColors">
-    <option value="3">3n</option>
-    <option value="4">4n</option>
-    <option value="5">5n</option>
-    <option value="6">6n</option>
-    <option value="7">7n</option>
-    <option value="8">8n</option>
-    <option value="9">9n</option>
-</select>
-    <button id="buttonRun">ramp</button></div>
+      <option value="3">3n</option>
+      <option value="4">4n</option>
+      <option value="5">5n</option>
+      <option value="6">6n</option>
+      <option value="7">7n</option>
+      <option value="8">8n</option>
+      <option value="9">9n</option>
+    </select>
+    <button id="buttonRun">Ramp</button>
+  </div>
 
   <div id="float-right">
-      <button id="float-rightButton">o</button>
+    <button id="float-rightButton">o</button>
   </div>
   <div class="grid-container" id="color-grid"></div>
   <div id="color-animate"></div>
@@ -119,7 +120,7 @@
       },
 
       // function to create a color gradient between two colors in a sqaure with "n" sides and an array "a" of mix values per step
-      colorV: function(a, n) {
+      colorV: function (a, n) {
         var colorStart = $("#firstColor").val(),
           colorEnd = $("#lastColor").val(),
 
@@ -135,17 +136,25 @@
       },
 
       // populate the select element with options from a array of web color names
-      createColor: function() {
+      createColor: function () {
         var n = colorNames.length,
-          theList
+          theList = ""; // Initialize theList to avoid 'undefined'
+
         for (var i = 0; i < n; i++) {
-          theList += "<option value='" + colorNames[i] + "' style='background-color:#000000;'>" + colorNames[i] + "</option>"
+          var color = colorNames[i];
+
+          // Use chroma.js to determine if the color is dark or light
+          var luminance = chroma(color).luminance();
+          var textColor = luminance > 0.5 ? '#000000' : '#FFFFFF'; // Black text for light backgrounds, white for dark
+
+          // Append the option with dynamic background and text color
+          theList += "<option value='" + color + "' style='background-color:" + color + "; color:" + textColor + ";'>" + color + "</option>";
         }
-        return theList
+        return theList;
       },
 
       // populate css grid with correct number of columns
-      buildGrid: function(n) {
+      buildGrid: function (n) {
         var gridNumber = "",
           i = 0
         while (i < n) {
@@ -156,13 +165,13 @@
       },
 
       // throw some bling with an animated background
-      colorBackground: function(cancel) {
+      colorBackground: function (cancel) {
         console.log(cancel)
         var i = 0,
           j = 0,
           color = "";
         while (i <= 5 && cancel === "no") {
-          $("#color-animate").fadeToggle(4000, function() {
+          $("#color-animate").fadeToggle(4000, function () {
             console.log(i, j)
             if (j % 2 == 0) {
               color = colorNames[((Math.floor(Math.random() * colorNames.length)) + 1)]
@@ -173,9 +182,9 @@
           i++
         }
       },
-      
+
       // Create matrix to filter colors
-      makeMatrix: function(n) {
+      makeMatrix: function (n) {
 
         var a = []; // empty array to hold color transform values
 
@@ -189,7 +198,7 @@
         for (var y = 0; y < n; y++) {
           for (var x = 0; x < n; x++) {
             //a[y][x]=Math.random()
-            a[y][x] = (i + i/(n**2 - 1)) / n ** 2 // fix cell values for 0 - n steps
+            a[y][x] = (i + i / (n ** 2 - 1)) / n ** 2 // fix cell values for 0 - n steps
             i++
           }
         }
@@ -199,13 +208,13 @@
     };
 
     // print to page when ready!
-    $(document).ready(function() {
+    $(document).ready(function () {
 
       $("#firstColor").append(colorSpace.createColor());
       $("#lastColor").append(colorSpace.createColor())
 
       // jQuery button to create grid of lab colors
-      $("#buttonRun").click(function() {
+      $("#buttonRun").click(function () {
 
         var n = Number($("#nColors").val()) // number of cells on square side
         colorSpace.properties.cancel = "yes"; // turn off background animation
@@ -228,7 +237,7 @@
       });
 
       // Attach click event toggle on/offthe control bar
-      $("#float-rightButton").click(function() {
+      $("#float-rightButton").click(function () {
         $("#above").toggle(1000)
       });
 
