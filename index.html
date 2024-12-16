@@ -129,8 +129,18 @@
         $("#color-grid").empty();
         for (var y = 0; y < n; y++) {
           for (var x = 0; x < n; x++) {
-            var color = f(a[y][x])
-            $("<div></div>").text(color).css("background-color", color).appendTo("#color-grid");
+            var color = f(a[y][x]).hex(); // Ensure color is in HEX format
+            var luminance = chroma(color).luminance();
+            var textColor = luminance > 0.5 ? '#000000' : '#FFFFFF'; // Black text for light backgrounds, white for dark
+
+            $("<div></div>")
+              .text(color)
+              .css({
+                "background-color": color,
+                "color": textColor,
+                "transition": "color 0.3s, background-color 0.3s"
+              })
+              .appendTo("#color-grid");
           }
         }
       },
@@ -166,13 +176,13 @@
 
       // throw some bling with an animated background
       colorBackground: function (cancel) {
-        console.log(cancel)
+        // console.log(cancel)
         var i = 0,
           j = 0,
           color = "";
         while (i <= 5 && cancel === "no") {
           $("#color-animate").fadeToggle(4000, function () {
-            console.log(i, j)
+            // console.log(i, j)
             if (j % 2 == 0) {
               color = colorNames[((Math.floor(Math.random() * colorNames.length)) + 1)]
               $("#color-animate").css("background-color", color)
@@ -224,7 +234,7 @@
 
         var a = colorSpace.makeMatrix(n);
 
-        console.log(a)
+        // console.log(a)
 
         // run fucntion to create color ramp
         colorSpace.colorV(a, n);
